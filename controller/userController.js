@@ -4,7 +4,7 @@ const { sendEmail } = require('./../email');
 require('dotenv').config({ path: './config.env' });
 
 const jwt = require('jsonwebtoken');
-const expressJWT = require('express-jwt');
+//const expressJWT = require('express-jwt');
 
 
 exports.signup = async (req, res) =>{
