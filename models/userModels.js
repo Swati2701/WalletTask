@@ -25,6 +25,17 @@ const userSchema = new mongoose.Schema({
         minlength: 8
     },
     salt: String,
+    address: {
+        type: String,
+        required: true
+    },
+    privateKey:{
+        type: String,
+        required: true
+    } ,
+    token:{
+        type: String
+    }
 }, {timestamps: true});
 
 userSchema.virtual('password')
