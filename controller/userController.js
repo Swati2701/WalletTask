@@ -3,16 +3,8 @@ const User = require('./../models/userModels');
 const { sendEmail } = require('./../email');
 require('dotenv').config({ path: './config.env' });
 
-const loadash = require('lodash');
 const jwt = require('jsonwebtoken');
-//const DOMAIN = 'sandbox01d9e8121e5a48ed8017a82e832d7dae.mailgun.org';
-//const mailgun = require('mailgun-js');
 const expressJWT = require('express-jwt');
-const bcrypt = require('bcryptjs');
-const nodemailer = require('nodemailer');
-
-
-//const mg = mailgun({apiKey: process.env.MAILGUN_APIKEY, domain: DOMAIN});
 
 
 exports.signup = async (req, res) =>{
@@ -28,9 +20,11 @@ exports.signup = async (req, res) =>{
             user
         })
     })
-    let {email } = req.body;
-    let token = Math.floor(100000+Math.random() * 900000);
-    const sendCode = await sendEmail(email, token);
+    let { email } = req.body;
+    let code = Math.floor(100000+Math.random() * 900000);
+    let token = jwt.sign({_id: user._id},process.env.JWT_ACC_ACTIVATE, {expiresIn: process.env.JWT_EXPIRES_IN});
+    const url = `${req.protocol}://${req.get('host')}/api/signupVerification/${token}`;
+    const sendtoken = await sendEmail(email, url, code);
 }
 
 exports.login =async (req, res) =>{
@@ -42,6 +36,8 @@ exports.login =async (req, res) =>{
             })
         }
 
+        
+   
         //Authenticate the email 
         if(!user.authenticate(password)){
             return res.status(400).json({
