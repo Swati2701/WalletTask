@@ -1,13 +1,12 @@
 /* eslint-disable*/
 const nodemailer = require('nodemailer');
-require('dotenv').config({ path: './config.env' });
+//require('dotenv').config({ path: './config.env' });
 
 async function sendEmail(email, token, code) {
     try{
         const senderAddress = 'test@gmail.com';
         let toAddress = email;
         let subject = "verify your email";
-
         let html = `<!DOCTYPE>
         <html>
         <body>
@@ -16,12 +15,12 @@ async function sendEmail(email, token, code) {
         </body>
         </html>`;
 
-        var transport = nodemailer.createTransport({
-            host: "smtp.mailtrap.io",
-            port: 2525,
+        let transport = nodemailer.createTransport({
+            host: process.env.MAILTRAP_HOST,
+            port: process.env.MAILTRAP_PORT,
             auth: {
-                user: "e6ff4e3edf8984",
-                pass: "d11c3450387fe5"
+                user: process.env.MAILTRAP_USER,
+                pass: process.env.MAILTRAP_PASSWORD
   }
           });
 
